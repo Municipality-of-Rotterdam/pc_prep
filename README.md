@@ -11,8 +11,9 @@ This allows seamless preparation of geospatial data for segmentation and urban-s
 
 
 | **Pointcloud tile** |   | **Tree and asset geometries** |   | **2D raster w/ prompts, segmented assets** |
-|:------------:|:-:|:------------:|:-:|:------------:|
-| ![pc_tile_cc](docs/images/pc_tile_cc.png =800x) | ➕ | ![bgt_pavement_assets](docs/images/bgt_pavement_assets.png =800x) | ➡️ | ![debug_prompt_image](docs/images/debug_prompt_image.png =400x) ![pc_tile_assettype](docs/images/pc_tile_assettype.png =300x) |
+|:-------------------:|:-:|:-----------------------------:|:-:|:------------------------------------------:|
+| <img src="docs/images/pc_tile_cc.png" width="600"/> | ➕ | <img src="docs/images/bgt_pavement_assets.png" width="600"/> | ➡️ | <img src="docs/images/debug_prompt_image.png" width="350"/> <img src="docs/images/pc_tile_assettype.png" width="300"/> |
+
 *General workflow: Tree and asset geometries are combined with a pointcloud tile to create a promptable raster image and a pointcloud with asset segmentation.*
 
 
@@ -32,8 +33,13 @@ The toolkit supports:
 
 These functionalities together create a robust preprocessing pipeline for transforming raw LiDAR data into analysis-ready geospatial and vision-model training inputs. It is designed to handle **Cyclomedia-style datasets** (NL RD New / EPSG:28992, 50 m grid tiles) but is general enough to adapt to other grid-based LiDAR data.
 
-![pc_tile_cc](docs/images/pc_tile_cc.png =450x) ![pc_tile_ground_classification](docs/images/pc_tile_ground_classification.png =450x)
-*Ground-nonground classification.*
+<p align="center">
+  <img src="docs/images/pc_tile_cc.png" width="450"/>
+  <img src="docs/images/pc_tile_ground_classification.png" width="450"/>
+</p>
+
+*Ground–nonground classification.*
+
 
 ## 📂 Required Data Inputs
 
@@ -49,8 +55,12 @@ To run `pc_prep` (and specifically the `tree_prep/prep_pc.py` pipeline), you nee
 | **Output Directory Roots**    | folder paths      | Base folders where processed point cloud tiles, rasters, prompts, and per-tile BGT assets will be written.                         |
 
 
-![tree_df_pkl](docs/images/tree_df_pkl.png =250x)
-*Example input .pkl file with point geometries for tree locations.*
+<p align="center">
+  <img src="docs/images/tree_df_pkl.png" width="250"/>
+</p>
+
+*Example input `.pkl` file with point geometries for tree locations.*
+
 
 ### Notes
 - The preprocessing step derives the per-tile AOI automatically by:
