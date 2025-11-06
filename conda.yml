@@ -1,0 +1,11 @@
+name: pc_prep
+channels:
+  - conda-forge
+  - anaconda
+  - nodefaults
+dependencies:
+  - chardet=5.2.0
+  - python=3.11
+  - pip==23.0
+  - pip:
+      - pc_prep==<PACKAGE_VERSION>
