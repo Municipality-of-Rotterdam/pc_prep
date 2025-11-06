@@ -3,7 +3,6 @@ exclude:
         lib/|
         notebooks/|
         tests/|
-        devops_pipelines/|
         docs/
     )
 
