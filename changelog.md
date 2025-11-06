@@ -8,7 +8,7 @@ Package set-up created with raptor template version 0.3.1
 
 ---
 
-## [0.0.1] - yyyy-mm-dd
+## [0.0.1] - 2025-11-06
 
 ### **Release Highlights**
 First version of published package.
