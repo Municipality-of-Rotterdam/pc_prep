@@ -69,10 +69,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install poetry
-          poetry install --only dev,test
+          conda env create -f environment.yml
+          conda run -n pc_prep poetry install --only dev,test
 
       - name: Unit tests
-        run: poetry run pytest --cov-report term-missing --cov=src/pc_prep tests/ -m "not onlylocal" 
+        run: conda run -n pc_prep pytest --cov-report term-missing --cov=src/pc_prep tests/ -m "not onlylocal" 
 
       - name: Upload test results
         # Use always() to always run this step to publish test results when there are test failures
