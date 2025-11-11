@@ -1,7 +1,4 @@
 """Creating a logger object to use in all other files."""
-# Copyright Gemeente Rotterdam - All Rights Reserved
-# Unauthorized copying of this file, via any medium is strictly prohibited
-# Proprietary and confidential
 
 import logging
 import os
