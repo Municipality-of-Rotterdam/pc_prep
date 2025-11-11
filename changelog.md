@@ -1,4 +1,4 @@
-# Change Log: pkg_pc_prep
+# Change Log: pc_prep
 All notable changes to this repo will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/)
