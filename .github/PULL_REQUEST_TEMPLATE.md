@@ -1,4 +1,4 @@
-Before submitting this PR, please make sure:
+Before accepting this PR, please make sure:
 
 - [ ] Work is done in a feature branch, with name feature/xxx-task-at-hand
 - [ ] Code does run without errors, if this can be checked
