@@ -28,6 +28,7 @@ permissions:
   contents: read # Permissions to read the repository code
   id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
   pages: write
+  pull-requests: write
 
 jobs:
   Precommit:
@@ -68,10 +69,11 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           python -m pip install poetry
-          poetry install --only dev,test
+          conda env create -f environment.yml
+          conda run -n pc_prep poetry install --only dev,test
 
       - name: Unit tests
-        run: poetry run pytest --cov-report term-missing --cov=src/pc_prep tests/ -m "not onlylocal" 
+        run: conda run -n pc_prep pytest --cov-report term-missing --cov=src/pc_prep tests/ -m "not onlylocal" 
 
       - name: Upload test results
         # Use always() to always run this step to publish test results when there are test failures
@@ -126,19 +128,31 @@ jobs:
         if: steps.changed-files-src.outputs.any_changed == 'true'
         run: echo "SRC_CHANGED=True" >> $GITHUB_OUTPUT
 
+  Flags:
+    name: Expose boolean flags
+    runs-on: ubuntu-latest
+    outputs:
+      publish: ${{ steps.expose.outputs.publish }}
+      register: ${{ steps.expose.outputs.register }}
+    steps:
+      - id: expose
+        run: |
+          echo "publish=${{ env.PUBLISH_ON_PYPI }}" >> "$GITHUB_OUTPUT"
+          echo "register=${{ env.REGISTER_AML_ENV }}" >> "$GITHUB_OUTPUT"
+
   Build:
     # https://johnfraney.ca/blog/how-to-publish-a-python-package-with-poetry-and-github-actions/
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
-    needs: Check
+    needs: [Check, Flags]
 
     # # Dedicated environments with protections for publishing are strongly recommended.
     environment:
-      name: ${{ env.PACKAGE_NAME }}
-      url: https://pypi.org/p/${{ env.PROJECT_NAME }}
+      name: pc_prep
+      url: https://pypi.org/p/rdam
 
     # https://stackoverflow.com/questions/59882715/use-environment-variable-in-github-action-if
-    if: ${{ env.PUBLISH_ON_PYPI }} == 'True' && needs.Check.outputs.src_changed == 'True'
+    if: ${{ needs.Flags.outputs.publish == 'True' && needs.Check.outputs.src_changed == 'True' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -169,8 +183,8 @@ jobs:
   Register:
     name: Register new environment in Azure ML
     runs-on: ubuntu-latest
-    needs: Build
-    if: ${{ env.REGISTER_AML_ENV }} == 'True' && success() && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release'))
+    needs: [Build, Flags]
+    if: ${{ needs.Flags.outputs.register == 'True' && success() && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release')) }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
